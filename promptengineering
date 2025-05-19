@@ -1,0 +1,27 @@
+import os
+import mlflow
+import mlflow.langchain
+from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate
+
+# Set your OpenAI API key
+os.environ["OPENAI_API_KEY"] = "<<OPEMNAI KEY>>"  # Optional if already set in env
+
+# Set experiment by name
+mlflow.set_experiment("langchain-tracing-demo")
+mlflow.langchain.autolog()
+
+# Create LLM chain
+llm = OpenAI()
+prompt = PromptTemplate.from_template("Answer the following question: {question}")
+chain = prompt | llm
+
+# Run and log with MLflow
+with mlflow.start_run():
+    result = chain.invoke({"question": "what does the weather in lessburg, va  looks like?"})
+    print(result)
+
+
+### Output ###
+
+The weather in Leesburg, VA can vary depending on the season. In the summer, it tends to be hot and humid with occasional thunderstorms. In the winter, it is cold and can experience snowfall. Fall and spring tend to be mild with changing temperatures and some precipitation. Overall, Leesburg experiences four distinct seasons with varying weather patterns throughout the year.
